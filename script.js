@@ -207,21 +207,24 @@ function checkTenpai() {
     
     // 計算玩家選對的牌數
     let correctCount = 0;
+    let incorrectChoices = []; // 存儲錯誤的選擇
     playerSelections.forEach(choice => {
         if (correctAnswers.has(choice)) {
             correctCount++;
+        } else {
+            incorrectChoices.push(choice); // 將錯誤選擇添加到數組
         }
     });
 
     const totalCorrect = correctAnswers.size;
 
     // 根據答對的數量設定不同的顯示效果
-    if (correctCount === totalCorrect) {
+    if (correctCount === totalCorrect && incorrectChoices.length === 0) {
         result.textContent = `恭喜！您全對了！選對了 ${correctCount} 張聽牌，共有 ${totalCorrect} 張正確聽牌。正確答案為: ${Array.from(correctAnswers).join(', ')}`;
         result.style.color = "#4caf50"; // 柔和的綠色
         result.style.fontWeight = "bold"; // 加粗字體
     } else {
-        result.textContent = `您選對了 ${correctCount} 張聽牌，共有 ${totalCorrect} 張正確聽牌。正確答案為: ${Array.from(correctAnswers).join(', ')}`;
+        result.textContent = `您選對了 ${correctCount} 張聽牌，共有 ${totalCorrect} 張正確聽牌。正確答案為: ${Array.from(correctAnswers).join(', ')}。錯誤選擇為: ${incorrectChoices.join(', ') || '無'}`;
         result.style.color = "#ffc107"; // 柔和的黃色
         result.style.fontWeight = "normal"; // 正常字體
     }
@@ -229,6 +232,7 @@ function checkTenpai() {
     console.log("Player selections:", playerSelections);
     console.log("Displaying Correct Answers:", correctAnswers);
 }
+
 
 
 // 綁定按鈕事件

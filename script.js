@@ -4,11 +4,13 @@ const tongTiles = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 let hand = [];
 let correctAnswers = new Set();
 let playerSelections = new Set(); // 玩家選擇的聽牌
+let timer; // 用於計時器
+let secondsElapsed = 0; // 記錄經過的秒數
 
 // 隨機生成 7 張或 10 張的手牌，允許重複，最多重複 4 次
 function generateHand() {
     const handSize = Math.random() < 0.5 ? 7 : 10; // 隨機決定生成 7 張或 10 張牌
-    const onlyTenpai = document.getElementById('onlyTenpai').checked; // 檢查選項
+    const onlyTenpai = document.getElementById('tenpaiToggle').checked; // 檢查 Toggle Switch 是否打開
 
     do {
         hand = []; // 清空手牌
@@ -32,6 +34,21 @@ function generateHand() {
     renderHand();  // 顯示題目
     renderChoices(); // 顯示玩家選擇聽牌的區域
     console.log("Generated hand:", hand);
+
+    // 重置計時器
+    resetTimer();
+}
+
+// 重置計時器
+function resetTimer() {
+    clearInterval(timer); // 清除之前的計時器
+    secondsElapsed = 0; // 重置秒數
+    document.getElementById('timer').textContent = `經過時間: 0 秒`; // 顯示重置的時間
+    
+    timer = setInterval(() => {
+        secondsElapsed++;
+        document.getElementById('timer').textContent = `經過時間: ${secondsElapsed/10} 秒`; // 更新顯示的秒數
+    }, 100); // 每秒更新一次
 }
 
 // 計算正確的聽牌
@@ -173,13 +190,17 @@ function toggleChoice(tile, element) {
     }
 }
 
-// 檢查玩家的選擇並顯示結果
 function checkTenpai() {
     const result = document.getElementById('result');
+
+    // 停止計時器
+    clearInterval(timer);
     
     // 如果沒有正確的聽牌
     if (correctAnswers.size === 0) {
         result.textContent = "沒有聽牌。";
+        result.style.color = "#ff6b6b"; // 柔和的紅色
+        result.style.fontWeight = "bold"; // 加粗字體
         console.log("No correct tenpai found.");
         return;
     }
@@ -193,10 +214,22 @@ function checkTenpai() {
     });
 
     const totalCorrect = correctAnswers.size;
-    result.textContent = `您選對了 ${correctCount} 張聽牌，共有 ${totalCorrect} 張正確聽牌。正確答案為: ${Array.from(correctAnswers).join(', ')}`;
+
+    // 根據答對的數量設定不同的顯示效果
+    if (correctCount === totalCorrect) {
+        result.textContent = `恭喜！您全對了！選對了 ${correctCount} 張聽牌，共有 ${totalCorrect} 張正確聽牌。正確答案為: ${Array.from(correctAnswers).join(', ')}`;
+        result.style.color = "#4caf50"; // 柔和的綠色
+        result.style.fontWeight = "bold"; // 加粗字體
+    } else {
+        result.textContent = `您選對了 ${correctCount} 張聽牌，共有 ${totalCorrect} 張正確聽牌。正確答案為: ${Array.from(correctAnswers).join(', ')}`;
+        result.style.color = "#ffc107"; // 柔和的黃色
+        result.style.fontWeight = "normal"; // 正常字體
+    }
+
     console.log("Player selections:", playerSelections);
     console.log("Displaying Correct Answers:", correctAnswers);
 }
+
 
 // 綁定按鈕事件
 document.getElementById('generate').addEventListener('click', generateHand);

@@ -8,19 +8,28 @@
 </head>
 <body>
     <h1>麻將聽牌練習</h1>
+    
+    <!-- 選擇題目類型 -->
+    <div id="options">
+        <label class="switch">
+            <input type="checkbox" id="tenpaiToggle" checked>
+            <span class="slider"></span>
+        </label>
+        <span id="toggleLabel">只出有聽牌的題目</span>
+    </div>
+
+    <!-- <div id="hand"></div>
+    <button id="generate">隨機生成題目</button> -->
+    
     <div id="hand"></div>
-    <button id="generate">隨機生成題目</button>
     <h2>選擇您認為的聽牌</h2>
     <div id="choices"></div>
+
     <button id="check">檢查聽牌</button>
+    <button id="generate">🔄</button>
     <div id="result"></div>
-    <script src="script.js"></script>
-    <label>
-        <input type="checkbox" id="onlyTenpai" /> 只出有聽牌的題目
-      </label>
-      <div id="hand"></div>
-      <div id="choices"></div>
-      <div id="result"></div>
+    <div id="timer">經過時間: 0 秒</div>
     
+    <script src="script.js"></script>
 </body>
 </html>

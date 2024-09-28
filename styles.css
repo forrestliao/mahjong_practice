@@ -13,10 +13,13 @@ h1, h2 {
 }
 
 #hand, #choices {
-    display: flex;
+    display: flex; 
     justify-content: center;
-    flex-wrap: wrap;
-    margin: 20px;
+    flex-wrap: nowrap; /* 禁止換行 */
+    margin: 20px 0; /* 添加上下邊距 */
+    width: 100%; /* 使用 100% 寬度 */
+    max-width: 100%; /* 最大寬度為 100% */
+    overflow: hidden; /* 隱藏超出部分 */
 }
 
 .tile {
@@ -125,4 +128,26 @@ input:checked + .slider:before {
     font-size: 1.2rem;
     color: #00aaff; /* 預設顏色 */
     transition: color 0.3s, font-weight 0.3s; /* 增加過渡效果 */
+}
+
+/* 在小螢幕上調整牌的大小 */
+@media (max-width: 600px) {
+    #hand, #choices {
+        align-items: center; /* 垂直居中 */
+    }
+    .tile {
+        width: 100%; /* 使每個 tile 佔滿寬度 */
+        max-width: 80%; /* 最大寬度限制 */
+        margin: 5px 0; /* 垂直邊距 */
+    }
+}
+
+
+/* 大於 900 像素的設備 */
+@media (min-width: 900px) {
+    .tile {
+        width: 50px; /* 恢復正常大小 */
+        height: 70px; 
+        font-size: 1.2rem; /* 恢復字體大小 */
+    }
 }
